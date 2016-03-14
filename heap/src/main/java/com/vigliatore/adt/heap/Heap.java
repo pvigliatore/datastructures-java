@@ -1,15 +1,7 @@
 package com.vigliatore.adt.heap;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
-
-public interface Heap<T extends Comparable<T>> {
+public interface Heap<T> {
   void clear();
-
-  boolean addAll(Collection<? extends T> c);
 
   int size();
 

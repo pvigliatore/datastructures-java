@@ -1,6 +1,6 @@
 package com.vigliatore.adt.heap;
 
-public interface IndexedHeap<K, V extends Comparable<V>> {
+public interface IndexedHeap<K, V> {
 
   boolean isEmpty();
 
@@ -8,5 +8,5 @@ public interface IndexedHeap<K, V extends Comparable<V>> {
 
   void add(K key, V value);
 
-  void deleteKey(K key);
+  void delete(K key);
 }

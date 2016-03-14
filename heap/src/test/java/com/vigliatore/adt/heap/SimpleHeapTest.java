@@ -6,15 +6,17 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SimpleHeapTest {
 
-  private SimpleHeap<Integer> heap;
+  private Heap<Integer> heap;
 
   @Before
   public void setup() {
-    heap = new SimpleHeap<>();
+    heap = SimpleHeap.minHeap();
   }
 
   @Test
