@@ -7,32 +7,23 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
-public class SimpleIndexedHeap<K, V> implements IndexedHeap<K, V> {
-
-  public static <K, V extends Comparable<V>> IndexedHeap<K, V> minHeap() {
-    return new SimpleIndexedHeap<K, V>(Comparator.<V> naturalOrder());
-  }
-
-  public static <K, V extends Comparable<V>> IndexedHeap<K, V> maxHeap() {
-    return new SimpleIndexedHeap<K, V>(Comparator.<V> naturalOrder().reversed());
-  }
-
-  public static <K, V> IndexedHeap<K, V> newInstance(Comparator<V> comparator) {
-    return new SimpleIndexedHeap<K, V>(comparator);
-  }
+class SimpleIndexedHeap<K, V> implements IndexedHeap<K, V> {
 
   private final List<V> values;
 
+  private final Function<V, K> idFunction;
   private final Comparator<V> comparator;
 
   private final List<K> ids;
   private final Map<K, Integer> indexById;
 
-  private SimpleIndexedHeap(Comparator<V> comparator) {
-    this.values = new ArrayList<V>();
+  SimpleIndexedHeap(Function<V, K> idFunction, Comparator<V> comparator) {
+    this.idFunction = idFunction;
     this.comparator = comparator;
 
+    this.values = new ArrayList<V>();
     this.ids = new ArrayList<>();
     this.indexById = new HashMap<>();
   }
@@ -48,13 +39,29 @@ public class SimpleIndexedHeap<K, V> implements IndexedHeap<K, V> {
   }
 
   @Override
-  public void add(K key, V value) {
-    if (indexById.containsKey(key)) {
+  public void add(V value) {
+    if (indexById.containsKey(idFunction.apply(value))) {
       throw new IllegalArgumentException();
     }
 
-    ids.add(key);
-    indexById.put(key, ids.size() - 1);
+    ids.add(idFunction.apply(value));
+    indexById.put(idFunction.apply(value), ids.size() - 1);
+    values.add(value);
+  }
+
+  @Override
+  public void update(K key, V value) {
+    if (!indexById.containsKey(key)) {
+      throw new IllegalStateException();
+    }
+
+    int currentIndex = indexById.get(key);
+    V currentValue = values.get(currentIndex);
+    if (comparator.compare(value, currentValue) <= 0) {
+      swim(currentIndex);
+    } else {
+      sink(currentIndex);
+    }
   }
 
   private void swapIdPosition(int index1, int index2) {

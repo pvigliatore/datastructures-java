@@ -35,10 +35,9 @@ class SimpleHeap<T> implements Heap<T> {
     return values.size();
   }
 
-  public boolean add(T value) {
+  public void add(T value) {
     values.add(value);
     swim(size() - 1);
-    return true;
   }
 
   private void swim(int index) {
