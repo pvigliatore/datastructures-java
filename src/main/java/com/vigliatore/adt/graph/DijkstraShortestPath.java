@@ -42,10 +42,13 @@ public class DijkstraShortestPath {
       shortestDistances.put(edge.to(), shortestDistanceToNode);
 
       // update the priority queue with the new estimated shortest paths
-      graph.get(edge.to()).forEach((neighbor, weight) -> {
-        int shortestDistanceToNeighbor = Math.min(shortestDistanceToNode + weight, shortestDistance(neighbor));
-        priorityQueue.update(neighbor, PathWeight.get(neighbor, shortestDistanceToNeighbor));
-      });
+      graph.getAdjecentVertices(edge.to())
+          .stream()
+          .forEach(adjacentVertex -> {
+            int weight = graph.getFirstWeight(Edge.get(edge.to(), adjacentVertex));
+            int shortestDistanceToNeighbor = Math.min(shortestDistanceToNode + weight, shortestDistance(adjacentVertex));
+            priorityQueue.update(adjacentVertex, PathWeight.get(adjacentVertex, shortestDistanceToNeighbor));
+          });
     }
 
     return Collections.unmodifiableMap(shortestDistances);

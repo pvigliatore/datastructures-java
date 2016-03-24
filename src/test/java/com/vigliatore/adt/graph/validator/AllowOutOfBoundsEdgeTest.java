@@ -1,11 +1,10 @@
 package com.vigliatore.adt.graph.validator;
 
 import com.vigliatore.adt.graph.Edge;
+import com.vigliatore.adt.graph.GraphBuilder;
 import com.vigliatore.adt.graph.WeightedDigraph;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -23,15 +22,20 @@ public class AllowOutOfBoundsEdgeTest {
 
   @Test
   public void verticesAreBounded() {
-    graph = new WeightedDigraph(1);
+    int size = 1;
+    graph = buildGraph(size);
     validator = new AllowOutOfBoundsEdge(false);
     boolean valid = validator.isValid(graph, edge, 100);
     assertFalse(valid);
   }
 
+  public WeightedDigraph buildGraph(int size) {
+    return new GraphBuilder().setSize(size).build();
+  }
+
   @Test
   public void verticesAreUnbounded() {
-    graph = new WeightedDigraph(1);
+    graph = buildGraph(1);
     validator = new AllowOutOfBoundsEdge(true);
     boolean valid = validator.isValid(graph, edge, 100);
     assertTrue(valid);

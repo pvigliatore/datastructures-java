@@ -3,10 +3,11 @@ package com.vigliatore.adt.graph;
 import com.vigliatore.adt.graph.validator.EdgeValidator;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class WeightedDigraph {
 
@@ -14,7 +15,7 @@ public class WeightedDigraph {
   private final List<EdgeValidator> validators;
   private int vertices;
 
-  public WeightedDigraph(int vertices, EdgeValidator... validators) {
+  WeightedDigraph(int vertices, EdgeValidator... validators) {
     this.vertices = vertices;
     this.edges = new Edges();
     this.validators = Collections.unmodifiableList(Arrays.asList(validators));
@@ -45,16 +46,20 @@ public class WeightedDigraph {
     return edges.contains(edge);
   }
 
-  public Map<Integer, Integer> get(int node) {
-    return edges.getNeighbors(node);
-  }
-
-  public int get(Edge edge) {
-    return edges.getWeight(edge);
-  }
-
   public int vertices() {
     return vertices;
+  }
+
+  public int getFirstWeight(Edge edge) {
+    return edges.getWeight(edge).stream().findFirst().orElseThrow(IllegalArgumentException::new);
+  }
+
+  public Set<Integer> getAdjecentVertices(int vertex) {
+    return edges.getAdjacentVertices(vertex);
+  }
+
+  public Collection<Integer> getWeights(Edge edge) {
+    return edges.getWeight(edge);
   }
 
   public int size() {

@@ -4,17 +4,22 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
+import java.util.Collections;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class WeightedDigraphTest {
 
   private WeightedDigraph graph;
 
   private void createGraph(int vertices) {
-    graph = new WeightedDigraph(vertices);
+    graph = new GraphBuilder()
+        .setSize(vertices)
+        .allowNegativeWeightEdges()
+        .build();
   }
 
   @Test
@@ -25,7 +30,7 @@ public class WeightedDigraphTest {
 
   @Test
   public void singleEdgeGraphHasSizeOne() {
-    createGraph(2);
+    createGraph(100);
     addEdge(1, 2, 0);
     assertEquals(1, graph.size());
   }
@@ -37,32 +42,26 @@ public class WeightedDigraphTest {
 
     createGraph(4);
     graph.add(edge, weight);
-    graph.add(edge.reverse(), 0);
-    assertEquals(weight, graph.get(edge));
-    assertEquals(0, graph.get(edge.reverse()));
+    graph.add(edge.reverse(), -weight);
+    assertEquals(weight, graph.getFirstWeight(edge));
+    assertEquals(-weight, graph.getFirstWeight(edge.reverse()));
   }
 
   @Test
-  public void getNeighborsHasCorrectWeights() {
-    // given
-    Edge edge = Edge.get(1, 2);
+  public void getAdjacentVertices() {
     int weight = 10;
-
     createGraph(4);
-    graph.add(edge, weight);
 
-    // when
-    Map<Integer, Integer> neighbors = graph.get(1);
+    graph.add(Edge.get(1, 2), weight);
+    graph.add(Edge.get(3, 2), weight);
 
-    // then
-    assertEquals(weight, neighbors.get(2).intValue());
+    verifyContents(graph.getAdjecentVertices(1), Collections.singletonList(2));
+    assertTrue(graph.getAdjecentVertices(2).isEmpty());
   }
 
-  @Test
-  public void nonExistantNodeHasNoNeighbors() {
-    createGraph(1);
-    Map<Integer, Integer> neighbors = graph.get(0);
-    assertTrue(neighbors.isEmpty());
+  public void verifyContents(Collection<Integer> neighbors, Collection<Integer> expected) {
+    assertEquals(expected.size(), neighbors.size());
+    assertTrue(neighbors.containsAll(expected));
   }
 
   @Test
@@ -75,8 +74,7 @@ public class WeightedDigraphTest {
     graph.add(edge2, 2);
     graph.add(edge3, 3);
 
-    Map<Integer, Integer> neighbors = graph.get(1);
-    Set<Integer> actualNeighborIds = neighbors.keySet();
+    Set<Integer> actualNeighborIds = graph.getAdjecentVertices(1);
     Collection<Integer> expectedNeighborIds = Arrays.asList(2, 3);
 
     assertEquals(actualNeighborIds.size(), expectedNeighborIds.size());

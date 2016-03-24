@@ -1,48 +1,55 @@
 package com.vigliatore.adt.graph;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 
-public class Edges {
+class Edges {
 
   private final Map<Integer, Set<Integer>> neighbors;
-  private final Map<Edge, Integer> weights;
+  private final Map<Edge, List<Integer>> weights;
 
   public Edges() {
     this.neighbors = new HashMap<>();
     this.weights = new HashMap<>();
   }
 
+  public boolean isEmpty() {
+    return size() == 0;
+  }
+
   public int size() {
-    return weights.keySet().size();
+    int size = 0;
+    for (Collection<Integer> edgeWeights : weights.values()) {
+      size += edgeWeights.stream().count();
+    }
+    return size;
   }
 
   public Edge getEdge() {
     return null;
   }
 
-  public int getWeight(Edge edge) {
-    return weights.get(edge);
+  public Collection<Integer> getWeight(Edge edge) {
+    List<Integer> edgeWeights = weights.getOrDefault(edge, Collections.emptyList());
+    return Collections.unmodifiableCollection(edgeWeights);
   }
 
-  public Map<Integer, Integer> getNeighbors(int vertex) {
-    return neighbors.getOrDefault(vertex, Collections.emptySet())
-        .stream()
-        .collect(Collectors.toMap(
-            UnaryOperator.identity(),
-            x -> getWeight(Edge.get(vertex, x))
-        ));
+  public Set<Integer> getAdjacentVertices(int vertex) {
+    return neighbors.getOrDefault(vertex, Collections.emptySet());
   }
 
   public void add(Edge edge, int weight) {
     neighbors.putIfAbsent(edge.from, new HashSet<>());
     neighbors.get(edge.from).add(edge.to);
-    weights.put(edge, weight);
+
+    weights.putIfAbsent(edge, new ArrayList<>());
+    weights.get(edge).add(weight);
   }
 
   public boolean contains(Edge edge) {
