@@ -110,32 +110,8 @@ public class WeightedDigraphTest {
     assertEquals(0, graph.size());
   }
 
-  @Test (expected = IllegalArgumentException.class)
-  public void graphEdgeReferencesInvalidVertex() {
-    createGraph(2);
-    addEdge(1, 3, 10);
-  }
-
-  @Test (expected = IllegalArgumentException.class)
-  public void addEdgeToZeroSizeGraph() {
-    createGraph(0);
-    addEdge(0, 0, 0);
-  }
-
-  @Test (expected = IllegalArgumentException.class)
-  public void edgesMustHaveUniqueVertices() {
-    createGraph(2);
-    addEdge(1, 1, 10);
-  }
-
   private void addEdge(int from, int to, int weight) {
     graph.add(Edge.get(from, to), weight);
-  }
-
-  @Test (expected = IllegalArgumentException.class)
-  public void disallowNegativeWeightEdge() {
-    createGraph(2);
-    addEdge(1, 2, -1);
   }
 
 }

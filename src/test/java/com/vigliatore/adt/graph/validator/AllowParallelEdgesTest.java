@@ -1,0 +1,40 @@
+package com.vigliatore.adt.graph.validator;
+
+import com.vigliatore.adt.graph.Edge;
+import com.vigliatore.adt.graph.WeightedDigraph;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+public class AllowParallelEdgesTest {
+
+  private WeightedDigraph graph;
+  private EdgeValidator validator;
+
+  @Before
+  public void setup() {
+    graph = new WeightedDigraph(2);
+    graph.add(Edge.get(1, 2), 2);
+  }
+
+  @Test
+  public void allowParallelEdges() {
+    createValidator(true);
+    boolean valid = validator.isValid(graph, Edge.get(1, 2), 100);
+    assertTrue(valid);
+  }
+
+  private void createValidator(boolean allowed) {
+    validator = new AllowParallelEdges(allowed);
+  }
+
+  @Test
+  public void disallowParallelEdges() {
+    createValidator(false);
+    boolean valid = validator.isValid(graph, Edge.get(1, 2), 100);
+    assertFalse(valid);
+  }
+
+}

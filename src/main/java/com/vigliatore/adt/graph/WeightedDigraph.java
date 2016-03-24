@@ -1,8 +1,13 @@
 package com.vigliatore.adt.graph;
 
+import com.vigliatore.adt.graph.validator.EdgeValidator;
+
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.UnaryOperator;
@@ -10,14 +15,16 @@ import java.util.stream.Collectors;
 
 public class WeightedDigraph {
 
-  private final int vertices;
   private final Map<Integer, Set<Integer>> edges;
   private final Map<Edge, Integer> weights;
+  private final List<EdgeValidator> validators;
+  private int vertices;
 
-  public WeightedDigraph(int vertices) {
+  public WeightedDigraph(int vertices, EdgeValidator... validators) {
     this.vertices = vertices;
     this.edges = new HashMap<>();
     this.weights = new HashMap<>();
+    this.validators = Collections.unmodifiableList(Arrays.asList(validators));
   }
 
   @Deprecated
@@ -27,16 +34,19 @@ public class WeightedDigraph {
   }
 
   public void add(Edge edge, int weight) {
-    if (edge.isLoop()
-        || !contains(edge.to)
-        || !contains(edge.from)
-        || weight < 0) {
-      throw new IllegalArgumentException();
-    }
     addEdge(edge, weight);
   }
 
+  private void validate(Edge edge, int weight) {
+    boolean valid = validators.stream().allMatch(validator -> validator.isValid(this, edge, weight));
+    if (!valid) {
+      throw new IllegalArgumentException();
+    }
+  }
+
   private void addEdge(Edge edge, int weight) {
+    validate(edge, weight);
+    vertices = Arrays.asList(edge.from, edge.to, vertices).stream().max(Comparator.naturalOrder()).get();
     edges.putIfAbsent(edge.from, new HashSet<>());
     edges.get(edge.from).add(edge.to);
     weights.put(edge, weight);
