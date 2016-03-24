@@ -19,19 +19,24 @@ public class DijkstraShortestPath {
   public DijkstraShortestPath(WeightedDigraph graph, int startNode) {
     this.graph = graph;
     this.startNode = startNode;
+    this.priorityQueue = createPriorityQueue();
+    this. shortestDistances = new HashMap<>();
+    initialize(graph);
+  }
 
-    Comparator<PathWeight> comparator = (o1, o2) -> Integer.compare(o1.weight(), o2.weight());
-    priorityQueue = new IndexedHeapBuilder<Integer, PathWeight>()
-        .setComparator(comparator)
-        .setIdFunction(PathWeight::to)
-        .build();
-
-    shortestDistances = new HashMap<>();
-
+  public void initialize(WeightedDigraph graph) {
     IntStream.rangeClosed(1, graph.vertices()).forEach(vertex -> {
       shortestDistances.put(vertex, Integer.MAX_VALUE);
       priorityQueue.add(PathWeight.get(vertex, Integer.MAX_VALUE));
     });
+  }
+
+  public IndexedHeap<Integer, PathWeight> createPriorityQueue() {
+    Comparator<PathWeight> comparator = (o1, o2) -> Integer.compare(o1.weight(), o2.weight());
+    return new IndexedHeapBuilder<Integer, PathWeight>()
+        .setComparator(comparator)
+        .setIdFunction(PathWeight::to)
+        .build();
   }
 
   public Map<Integer, Integer> solve() {
