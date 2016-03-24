@@ -5,32 +5,19 @@ import com.vigliatore.adt.graph.validator.EdgeValidator;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
 
 public class WeightedDigraph {
 
-  private final Map<Integer, Set<Integer>> edges;
-  private final Map<Edge, Integer> weights;
+  private final Edges edges;
   private final List<EdgeValidator> validators;
   private int vertices;
 
   public WeightedDigraph(int vertices, EdgeValidator... validators) {
     this.vertices = vertices;
-    this.edges = new HashMap<>();
-    this.weights = new HashMap<>();
+    this.edges = new Edges();
     this.validators = Collections.unmodifiableList(Arrays.asList(validators));
-  }
-
-  @Deprecated
-  public void add(int from, int to, int weight) {
-    Edge edge = Edge.get(from, to);
-    add(edge, weight);
   }
 
   public void add(Edge edge, int weight) {
@@ -47,9 +34,7 @@ public class WeightedDigraph {
   private void addEdge(Edge edge, int weight) {
     validate(edge, weight);
     vertices = Arrays.asList(edge.from, edge.to, vertices).stream().max(Comparator.naturalOrder()).get();
-    edges.putIfAbsent(edge.from, new HashSet<>());
-    edges.get(edge.from).add(edge.to);
-    weights.put(edge, weight);
+    edges.add(edge, weight);
   }
 
   public boolean contains(int vertex) {
@@ -57,20 +42,15 @@ public class WeightedDigraph {
   }
 
   public boolean contains(Edge edge) {
-    return weights.containsKey(edge);
+    return edges.contains(edge);
   }
 
   public Map<Integer, Integer> get(int node) {
-    return edges.getOrDefault(node, Collections.<Integer> emptySet())
-        .stream()
-        .collect(Collectors.toMap(
-            UnaryOperator.identity(),
-            x -> get(Edge.get(node, x))
-        ));
+    return edges.getNeighbors(node);
   }
 
   public int get(Edge edge) {
-    return weights.get(edge);
+    return edges.getWeight(edge);
   }
 
   public int vertices() {
@@ -78,7 +58,7 @@ public class WeightedDigraph {
   }
 
   public int size() {
-    return edges.keySet().size();
+    return edges.size();
   }
 
 }
