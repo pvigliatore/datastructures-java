@@ -3,10 +3,12 @@ package com.vigliatore.adt.graph;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 class Edges {
@@ -35,9 +37,13 @@ class Edges {
     return null;
   }
 
-  public Collection<Integer> getWeight(Edge edge) {
+  public Collection<Integer> getWeights(Edge edge) {
     List<Integer> edgeWeights = weights.getOrDefault(edge, Collections.emptyList());
     return Collections.unmodifiableCollection(edgeWeights);
+  }
+
+  public Optional<Integer> getMinWeight(Edge edge) {
+    return getWeights(edge).stream().min(Comparator.naturalOrder());
   }
 
   public Set<Integer> getAdjacentVertices(int vertex) {

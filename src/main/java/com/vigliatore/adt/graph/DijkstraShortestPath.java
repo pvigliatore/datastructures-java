@@ -42,21 +42,27 @@ public class DijkstraShortestPath {
   public Map<Integer, Integer> solve() {
     priorityQueue.update(startNode, PathWeight.get(startNode, 0));
     while (isUnsolved()) {
-      PathWeight edge = priorityQueue.pop();
-      int shortestDistanceToNode = Math.min(shortestDistance(edge.to()), edge.weight());
-      shortestDistances.put(edge.to(), shortestDistanceToNode);
+      PathWeight nearestVertex = priorityQueue.pop();
+      int vertex = nearestVertex.to();
+      int shortestDistanceToNode = Math.min(shortestDistance(vertex), nearestVertex.weight());
+      shortestDistances.put(vertex, shortestDistanceToNode);
 
       // update the priority queue with the new estimated shortest paths
-      graph.getAdjecentVertices(edge.to())
+      graph.getAdjecentVertices(vertex)
           .stream()
           .forEach(adjacentVertex -> {
-            int weight = graph.getFirstWeight(Edge.get(edge.to(), adjacentVertex));
+            Edge edge = Edge.get(vertex, adjacentVertex);
+            int weight = getMinWeight(edge);
             int shortestDistanceToNeighbor = Math.min(shortestDistanceToNode + weight, shortestDistance(adjacentVertex));
             priorityQueue.update(adjacentVertex, PathWeight.get(adjacentVertex, shortestDistanceToNeighbor));
           });
     }
 
     return Collections.unmodifiableMap(shortestDistances);
+  }
+
+  public int getMinWeight(Edge edge) {
+    return graph.getMinWeight(edge).orElseThrow(IllegalArgumentException::new);
   }
 
   private boolean isUnsolved() {

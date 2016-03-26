@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class WeightedDigraph {
@@ -50,16 +51,16 @@ public class WeightedDigraph {
     return vertices;
   }
 
-  public int getFirstWeight(Edge edge) {
-    return edges.getWeight(edge).stream().findFirst().orElseThrow(IllegalArgumentException::new);
-  }
-
   public Set<Integer> getAdjecentVertices(int vertex) {
     return edges.getAdjacentVertices(vertex);
   }
 
   public Collection<Integer> getWeights(Edge edge) {
-    return edges.getWeight(edge);
+    return edges.getWeights(edge);
+  }
+
+  public Optional<Integer> getMinWeight(Edge edge) {
+    return edges.getMinWeight(edge);
   }
 
   public int size() {
