@@ -3,6 +3,8 @@ package com.vigliatore.adt.graph;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -113,6 +115,42 @@ public class GraphBuilderTest {
         .build();
 
     graph.add(Edge.get(1, 3), -10);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void defaultGraphDisallowsParallelEdges() {
+    graph = builder
+        .setSize(5)
+        .build();
+
+    graph.add(Edge.get(1, 2), 1);
+    graph.add(Edge.get(1, 2), 2);
+  }
+
+  @Test
+  public void buildGraphAllowingParallelEdges() {
+    graph = builder
+        .allowParallelEdges()
+        .setSize(5)
+        .build();
+
+    Edge edge = Edge.get(1, 2);
+    graph.add(edge, 1);
+    graph.add(edge, 2);
+
+    graph.getWeights(edge).containsAll(Arrays.asList(1, 2));
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void buildGraphDisallowingParallelEdges() {
+    graph = builder
+        .disallowParallelEdges()
+        .setSize(5)
+        .build();
+
+    Edge edge = Edge.get(1, 2);
+    graph.add(edge, 1);
+    graph.add(edge, 2);
   }
 
 }

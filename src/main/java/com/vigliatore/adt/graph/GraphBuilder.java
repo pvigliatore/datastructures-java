@@ -17,7 +17,7 @@ public class GraphBuilder {
     allowLoops(false);
     allowNegativeWeights(false);
     allowOutOfBoundsEdge = new AllowOutOfBoundsEdge(false);
-    allowParallelEdges = new AllowParallelEdges(false);
+    allowParallelEdges(false);
   }
 
   public GraphBuilder setSize(int size) {
@@ -61,6 +61,20 @@ public class GraphBuilder {
   public GraphBuilder disallowNegativeWeightEdges() {
     allowNegativeWeights(false);
     return this;
+  }
+
+  public GraphBuilder allowParallelEdges() {
+    allowParallelEdges(true);
+    return this;
+  }
+
+  public GraphBuilder disallowParallelEdges() {
+    allowParallelEdges(false);
+    return this;
+  }
+
+  private void allowParallelEdges(boolean allowed) {
+    this.allowParallelEdges = new AllowParallelEdges(allowed);
   }
 
   private void allowNegativeWeights(boolean allowed) {
