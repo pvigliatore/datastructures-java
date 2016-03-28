@@ -61,7 +61,7 @@ public class DijkstraShortestPath {
     return Collections.unmodifiableMap(shortestDistances);
   }
 
-  public int getMinWeight(Edge edge) {
+  private int getMinWeight(Edge edge) {
     return graph.getMinWeight(edge).orElseThrow(IllegalArgumentException::new);
   }
 
