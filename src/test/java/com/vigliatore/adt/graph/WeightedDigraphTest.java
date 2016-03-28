@@ -43,8 +43,8 @@ public class WeightedDigraphTest {
     createGraph(4);
     graph.add(edge, weight);
     graph.add(edge.reverse(), -weight);
-    assertEquals(weight, graph.getFirstWeight(edge));
-    assertEquals(-weight, graph.getFirstWeight(edge.reverse()));
+    assertEquals(weight, graph.getMinWeight(edge).get().intValue());
+    assertEquals(-weight, graph.getMinWeight(edge.reverse()).get().intValue());
   }
 
   @Test

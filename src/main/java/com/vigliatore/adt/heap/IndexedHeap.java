@@ -1,6 +1,16 @@
 package com.vigliatore.adt.heap;
 
-public interface IndexedHeap<K, V> extends Heap<V> {
+import com.vigliatore.adt.graph.Tuple;
+
+public interface IndexedHeap<K, V> {
+
+  int size();
+
+  void add(K key, V value);
+
+  boolean isEmpty();
+
+  Tuple<K, V> pop();
 
   void delete(K key);
 

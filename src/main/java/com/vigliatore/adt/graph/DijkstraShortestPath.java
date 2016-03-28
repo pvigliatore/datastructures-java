@@ -27,7 +27,7 @@ public class DijkstraShortestPath {
   public void initialize(WeightedDigraph graph) {
     IntStream.rangeClosed(1, graph.vertices()).forEach(vertex -> {
       shortestDistances.put(vertex, Integer.MAX_VALUE);
-      priorityQueue.add(PathWeight.get(vertex, Integer.MAX_VALUE));
+      priorityQueue.add(vertex, PathWeight.get(vertex, Integer.MAX_VALUE));
     });
   }
 
@@ -42,7 +42,7 @@ public class DijkstraShortestPath {
   public Map<Integer, Integer> solve() {
     priorityQueue.update(startNode, PathWeight.get(startNode, 0));
     while (isUnsolved()) {
-      PathWeight nearestVertex = priorityQueue.pop();
+      PathWeight nearestVertex = priorityQueue.pop().value();
       int vertex = nearestVertex.to();
       int shortestDistanceToNode = Math.min(shortestDistance(vertex), nearestVertex.weight());
       shortestDistances.put(vertex, shortestDistanceToNode);

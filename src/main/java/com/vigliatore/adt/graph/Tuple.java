@@ -5,14 +5,14 @@ import java.util.Map;
 
 public class Tuple<K, V> {
 
-  private Map.Entry<K, V> tuple;
+  private final Map.Entry<K, V> tuple;
 
-  public static <K, V> Tuple<K, V> create(K key, V value) {
-    return null;
+  public static <K, V> Tuple<K, V> instance(K key, V value) {
+    return new Tuple<K, V>(key, value);
   }
 
-  public Tuple(K key, V value) {
-    this.tuple = new AbstractMap.SimpleImmutableEntry<K, V>(key, value);
+  private Tuple(K key, V value) {
+    this.tuple = new AbstractMap.SimpleImmutableEntry<>(key, value);
   }
 
   public K key() {

@@ -26,7 +26,7 @@ public class GraphBuilderTest {
     graph.add(loopingEdge, weight);
 
     assertTrue(graph.contains(loopingEdge));
-    assertEquals(weight, graph.getFirstWeight(loopingEdge));
+    assertEquals(weight, graph.getMinWeight(loopingEdge).get().intValue());
   }
 
   @Test (expected = IllegalArgumentException.class)
@@ -48,7 +48,7 @@ public class GraphBuilderTest {
     graph.add(loopingEdge, weight);
 
     assertTrue(graph.contains(loopingEdge));
-    assertEquals(weight, graph.getFirstWeight(loopingEdge));
+    assertEquals(weight, graph.getMinWeight(loopingEdge).get().intValue());
   }
 
   @Test
@@ -102,7 +102,7 @@ public class GraphBuilderTest {
     int weight = -1;
     graph.add(edge, weight);
 
-    assertEquals(weight, graph.getFirstWeight(edge));
+    assertEquals(weight, graph.getMinWeight(edge).get().intValue());
   }
 
   @Test(expected = IllegalArgumentException.class)

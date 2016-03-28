@@ -1,6 +1,8 @@
 package com.vigliatore.adt.heap;
 
 
+import com.vigliatore.adt.graph.Tuple;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,37 +32,50 @@ class SimpleIndexedHeap<K, V> implements IndexedHeap<K, V> {
 
   @Override
   public boolean isEmpty() {
-    return false;
+    return values.isEmpty();
   }
 
   @Override
-  public V pop() {
-    return null;
+  public Tuple<K, V> pop() {
+    if (values.isEmpty()) {
+      return null;
+    }
+    K key = ids.get(0);
+    V value = values.get(0);
+    Tuple<K, V> keyValuePair = Tuple.instance(key, value);
+    delete(0);
+    return keyValuePair;
   }
 
   @Override
-  public void add(V value) {
-    if (indexById.containsKey(idFunction.apply(value))) {
+  public void add(K key, V value) {
+    if (indexById.containsKey(key)) {
       throw new IllegalArgumentException();
     }
 
-    ids.add(idFunction.apply(value));
-    indexById.put(idFunction.apply(value), ids.size() - 1);
+    ids.add(key);
+    indexById.put(key, ids.size() - 1);
     values.add(value);
+  }
+
+  private K id(V value) {
+    return idFunction.apply(value);
   }
 
   @Override
   public void update(K key, V value) {
     if (!indexById.containsKey(key)) {
-      throw new IllegalStateException();
+      return;
     }
 
-    int currentIndex = indexById.get(key);
-    V currentValue = values.get(currentIndex);
+    int index = indexById.get(key);
+    V currentValue = values.get(index);
+    values.set(index, value);
+
     if (comparator.compare(value, currentValue) <= 0) {
-      swim(currentIndex);
+      swim(index);
     } else {
-      sink(currentIndex);
+      sink(index);
     }
   }
 
@@ -80,6 +95,16 @@ class SimpleIndexedHeap<K, V> implements IndexedHeap<K, V> {
 
     int index = indexById.remove(key);
     ids.remove(index);
+    delete(index);
+  }
+
+  private void delete(int index) {
+    int lastIndex = values.size() - 1;
+    swap(index, lastIndex);
+    values.remove(lastIndex);
+    indexById.remove(ids.get(lastIndex));
+    ids.remove(lastIndex);
+    sink(index);
   }
 
   private void swim(int index) {
