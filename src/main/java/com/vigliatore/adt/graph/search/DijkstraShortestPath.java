@@ -1,5 +1,7 @@
-package com.vigliatore.adt.graph;
+package com.vigliatore.adt.graph.search;
 
+import com.vigliatore.adt.graph.Edge;
+import com.vigliatore.adt.graph.WeightedDigraph;
 import com.vigliatore.adt.heap.IndexedHeap;
 import com.vigliatore.adt.heap.IndexedHeapBuilder;
 

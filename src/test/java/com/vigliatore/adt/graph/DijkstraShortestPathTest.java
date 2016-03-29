@@ -1,5 +1,6 @@
 package com.vigliatore.adt.graph;
 
+import com.vigliatore.adt.graph.search.DijkstraShortestPath;
 import org.junit.Test;
 
 import java.util.ArrayList;

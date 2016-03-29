@@ -1,4 +1,4 @@
-package com.vigliatore.adt.graph;
+package com.vigliatore.adt.graph.search;
 
 class PathWeight {
 
