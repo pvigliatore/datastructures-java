@@ -53,6 +53,7 @@ public class DijkstraShortestPath {
             Edge edge = Edge.get(vertex, adjacentVertex);
             int weight = getMinWeight(edge);
             int shortestDistanceToNeighbor = Math.min(shortestDistanceToNode + weight, shortestDistance(adjacentVertex));
+            shortestDistances.put(adjacentVertex, shortestDistanceToNeighbor);
             priorityQueue.update(adjacentVertex, PathWeight.get(adjacentVertex, shortestDistanceToNeighbor));
           });
     }
