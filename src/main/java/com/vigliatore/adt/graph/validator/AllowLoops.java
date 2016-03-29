@@ -13,6 +13,6 @@ public class AllowLoops implements EdgeValidator {
 
   @Override
   public boolean isValid(WeightedDigraph graph, Edge edge, int weight) {
-    return allowLoops || edge.to != edge.from;
+    return allowLoops || !edge.isLoop();
   }
 }
