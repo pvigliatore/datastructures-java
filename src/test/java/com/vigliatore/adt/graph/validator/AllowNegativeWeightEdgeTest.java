@@ -1,7 +1,7 @@
 package com.vigliatore.adt.graph.validator;
 
 import com.vigliatore.adt.graph.Edge;
-import com.vigliatore.adt.graph.WeightedDigraph;
+import com.vigliatore.adt.graph.WeightedGraph;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -16,7 +16,7 @@ public class AllowNegativeWeightEdgeTest {
   private static final int NEGATIVE_WEIGHT = -100;
 
   @Mock
-  private WeightedDigraph graph;
+  private WeightedGraph graph;
 
   @Mock
   private Edge edge;

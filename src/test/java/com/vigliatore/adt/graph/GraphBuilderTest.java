@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 public class GraphBuilderTest {
 
   private GraphBuilder builder;
-  private WeightedDigraph graph;
+  private WeightedGraph graph;
 
   @Before
   public void setup() {

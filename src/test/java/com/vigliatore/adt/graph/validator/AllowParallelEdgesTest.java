@@ -2,7 +2,7 @@ package com.vigliatore.adt.graph.validator;
 
 import com.vigliatore.adt.graph.Edge;
 import com.vigliatore.adt.graph.GraphBuilder;
-import com.vigliatore.adt.graph.WeightedDigraph;
+import com.vigliatore.adt.graph.WeightedGraph;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 public class AllowParallelEdgesTest {
 
-  private WeightedDigraph graph;
+  private WeightedGraph graph;
   private EdgeValidator validator;
 
   @Before

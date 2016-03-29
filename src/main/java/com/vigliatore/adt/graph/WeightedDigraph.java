@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class WeightedDigraph {
+public class WeightedDigraph implements WeightedGraph {
 
   private final Edges edges;
   private final List<EdgeValidator> validators;
@@ -22,6 +22,7 @@ public class WeightedDigraph {
     this.validators = Collections.unmodifiableList(Arrays.asList(validators));
   }
 
+  @Override
   public void add(Edge edge, int weight) {
     addEdge(edge, weight);
   }
@@ -39,30 +40,37 @@ public class WeightedDigraph {
     edges.add(edge, weight);
   }
 
+  @Override
   public boolean contains(int vertex) {
     return vertex > 0 && vertex <= vertices;
   }
 
+  @Override
   public boolean contains(Edge edge) {
     return edges.contains(edge);
   }
 
+  @Override
   public int vertices() {
     return vertices;
   }
 
+  @Override
   public Set<Integer> getAdjecentVertices(int vertex) {
     return edges.getAdjacentVertices(vertex);
   }
 
+  @Override
   public Collection<Integer> getWeights(Edge edge) {
     return edges.getWeights(edge);
   }
 
+  @Override
   public Optional<Integer> getMinWeight(Edge edge) {
     return edges.getMinWeight(edge);
   }
 
+  @Override
   public int size() {
     return edges.size();
   }

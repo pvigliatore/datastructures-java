@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 
 public class WeightedDigraphTest {
 
-  private WeightedDigraph graph;
+  private WeightedGraph graph;
 
   private void createGraph(int vertices) {
     graph = new GraphBuilder()

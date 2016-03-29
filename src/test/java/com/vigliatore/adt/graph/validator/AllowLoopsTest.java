@@ -1,7 +1,7 @@
 package com.vigliatore.adt.graph.validator;
 
 import com.vigliatore.adt.graph.Edge;
-import com.vigliatore.adt.graph.WeightedDigraph;
+import com.vigliatore.adt.graph.WeightedGraph;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +23,7 @@ public class AllowLoopsTest {
   }
 
   @Mock
-  private WeightedDigraph graph;
+  private WeightedGraph graph;
 
   @Test
   public void loopsAreAllowed() {

@@ -1,7 +1,7 @@
 package com.vigliatore.adt.graph.search;
 
 import com.vigliatore.adt.graph.Edge;
-import com.vigliatore.adt.graph.WeightedDigraph;
+import com.vigliatore.adt.graph.WeightedGraph;
 import com.vigliatore.adt.heap.IndexedHeap;
 import com.vigliatore.adt.heap.IndexedHeapBuilder;
 
@@ -13,12 +13,12 @@ import java.util.stream.IntStream;
 
 public class DijkstraShortestPath {
 
-  private final WeightedDigraph graph;
+  private final WeightedGraph graph;
   private final IndexedHeap<Integer, PathWeight> priorityQueue;
   private final Map<Integer, Integer> shortestDistances;
   private final int startNode;
 
-  public DijkstraShortestPath(WeightedDigraph graph, int startNode) {
+  public DijkstraShortestPath(WeightedGraph graph, int startNode) {
     this.graph = graph;
     this.startNode = startNode;
     this.priorityQueue = createPriorityQueue();
@@ -26,7 +26,7 @@ public class DijkstraShortestPath {
     initialize(graph);
   }
 
-  public void initialize(WeightedDigraph graph) {
+  public void initialize(WeightedGraph graph) {
     IntStream.rangeClosed(1, graph.vertices()).forEach(vertex -> {
       shortestDistances.put(vertex, Integer.MAX_VALUE);
       priorityQueue.add(vertex, PathWeight.get(vertex, Integer.MAX_VALUE));

@@ -1,7 +1,7 @@
 package com.vigliatore.adt.graph.validator;
 
 import com.vigliatore.adt.graph.Edge;
-import com.vigliatore.adt.graph.WeightedDigraph;
+import com.vigliatore.adt.graph.WeightedGraph;
 
 public class AllowParallelEdges implements EdgeValidator {
 
@@ -12,7 +12,7 @@ public class AllowParallelEdges implements EdgeValidator {
   }
 
   @Override
-  public boolean isValid(WeightedDigraph graph, Edge edge, int weight) {
+  public boolean isValid(WeightedGraph graph, Edge edge, int weight) {
     return allowParallelEdges || !graph.contains(edge);
   }
 
