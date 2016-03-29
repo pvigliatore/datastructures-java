@@ -8,12 +8,14 @@ import com.vigliatore.adt.graph.validator.AllowParallelEdges;
 public class GraphBuilder {
 
   private int size;
+  private int defaultWeight;
   private AllowLoops allowLoops;
   private AllowNegativeWeightEdge allowNegativeWeightedEdge;
   private AllowOutOfBoundsEdge allowOutOfBoundsEdge;
   private AllowParallelEdges allowParallelEdges;
 
   public GraphBuilder() {
+    defaultWeight = 0;
     allowLoops(false);
     allowNegativeWeights(false);
     allowOutOfBoundsEdge = new AllowOutOfBoundsEdge(false);
@@ -47,6 +49,7 @@ public class GraphBuilder {
   public WeightedGraph build() {
     return new WeightedDigraph(
         size,
+        defaultWeight,
         allowLoops,
         allowNegativeWeightedEdge,
         allowOutOfBoundsEdge,

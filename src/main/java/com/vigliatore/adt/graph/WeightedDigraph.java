@@ -14,12 +14,19 @@ public class WeightedDigraph implements WeightedGraph {
 
   private final Edges edges;
   private final List<EdgeValidator> validators;
+  private final int defaultWeight;
   private int vertices;
 
-  WeightedDigraph(int vertices, EdgeValidator... validators) {
+  WeightedDigraph(int vertices, int defaultWeight, EdgeValidator... validators) {
     this.vertices = vertices;
+    this.defaultWeight = defaultWeight;
     this.edges = new Edges();
     this.validators = Collections.unmodifiableList(Arrays.asList(validators));
+  }
+
+  @Override
+  public void add(Edge edge) {
+    addEdge(edge, defaultWeight);
   }
 
   @Override
