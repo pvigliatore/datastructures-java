@@ -9,20 +9,17 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 class SimpleIndexedHeap<K, V> implements IndexedHeap<K, V> {
 
   private final List<V> values;
 
-  private final Function<V, K> idFunction;
   private final Comparator<V> comparator;
 
   private final List<K> ids;
   private final Map<K, Integer> indexById;
 
-  SimpleIndexedHeap(Function<V, K> idFunction, Comparator<V> comparator) {
-    this.idFunction = idFunction;
+  SimpleIndexedHeap(Comparator<V> comparator) {
     this.comparator = comparator;
 
     this.values = new ArrayList<V>();
@@ -47,6 +44,16 @@ class SimpleIndexedHeap<K, V> implements IndexedHeap<K, V> {
     return keyValuePair;
   }
 
+  public Tuple<K, V> peek() {
+    if (values.isEmpty()) {
+      return null;
+    }
+    K key = ids.get(0);
+    V value = values.get(0);
+    Tuple<K, V> keyValuePair = Tuple.instance(key, value);
+    return keyValuePair;
+  }
+
   @Override
   public void add(K key, V value) {
     if (indexById.containsKey(key)) {
@@ -56,10 +63,7 @@ class SimpleIndexedHeap<K, V> implements IndexedHeap<K, V> {
     ids.add(key);
     indexById.put(key, ids.size() - 1);
     values.add(value);
-  }
-
-  private K id(V value) {
-    return idFunction.apply(value);
+    swim(values.size() - 1);
   }
 
   @Override

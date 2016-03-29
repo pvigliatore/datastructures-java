@@ -4,7 +4,10 @@ import com.vigliatore.adt.graph.Tuple;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
@@ -19,7 +22,7 @@ public class SimpleIndexedHeapTest {
 
   @Before
   public void setup() {
-    queue = new SimpleIndexedHeap<>(Function.<Integer>identity(), Comparator.<Integer>naturalOrder());
+    queue = new SimpleIndexedHeap<>(Comparator.<Integer>naturalOrder());
   }
 
   @Test
@@ -62,9 +65,68 @@ public class SimpleIndexedHeapTest {
 
   @Test
   public void sortedTest() {
-    IntStream.range(0, 1000).forEach(x -> queue.add(x, x));
-    boolean isSorted = IntStream.range(0, 1000).allMatch(x -> x == queue.pop().value());
-    assertTrue(isSorted);
+    int size = 1000;
+    IntStream.range(0, size).forEach(x -> queue.add(x, x));
+    verifyQueueIsSorted(Function.identity());
+  }
+
+  private void verifyQueueIsSorted(Function<Integer, Integer> valueFunction) {
+    for (int i = 0; !queue.isEmpty(); i++) {
+      Tuple<Integer, Integer> tuple = queue.pop();
+      int key = tuple.key();
+      int value = tuple.value();
+      assertEquals(i, key);
+      assertEquals(value, valueFunction.apply(key).intValue());
+    }
+  }
+
+  @Test
+  public void addRandomValues() {
+    int size = 20;
+    List<Integer> vertices = createRandomizedSequentialList(size);
+    vertices.stream().forEach(x -> queue.add(x, x));
+    verifyQueueIsSorted(Function.identity());
+  }
+
+  private List<Integer> createRandomizedSequentialList(int size) {
+    List<Integer> vertices = createSequentialList(size);
+    randomize(vertices);
+    return vertices;
+  }
+
+  private void randomize(List<Integer> vertices) {
+    Collections.shuffle(vertices);
+  }
+
+  private List<Integer> createSequentialList(int size) {
+    List<Integer> list = new ArrayList<>();
+    IntStream.range(0, size).forEach(list::add);
+    return list;
+  }
+
+  @Test
+  public void updateBySinkingAllValues() {
+    int size = 100;
+    createRandomizedSequentialList(size).forEach(x -> queue.add(x, x));
+    createRandomizedSequentialList(size).forEach(x -> queue.update(x, x * 2));
+    verifyQueueIsSorted(x -> x * 2);
+  }
+
+  @Test
+  public void updateBySwimingAllValues() {
+    int size = 100;
+    createRandomizedSequentialList(size).forEach(x -> queue.add(x, x * 2));
+    createRandomizedSequentialList(size).forEach(x -> queue.update(x, x));
+    verifyQueueIsSorted(Function.identity());
+  }
+
+  @Test
+  public void randomlyUpdateAllValues() {
+    int size = 100;
+    createRandomizedSequentialList(size).forEach(x -> queue.add(x, x));
+    createRandomizedSequentialList(size).forEach(x -> queue.update(x, x * 2));
+    createRandomizedSequentialList(size).forEach(x -> queue.update(x, x));
+    verifyQueueIsSorted(Function.identity());
   }
 
 }
