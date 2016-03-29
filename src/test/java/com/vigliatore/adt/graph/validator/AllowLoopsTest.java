@@ -10,7 +10,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AllowLoopsTest {
@@ -20,7 +19,7 @@ public class AllowLoopsTest {
 
   @Before
   public void setup() {
-    edge = Edge.get(1, 1);
+    edge = Edge.instance(1, 1);
   }
 
   @Mock

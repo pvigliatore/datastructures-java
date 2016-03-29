@@ -5,7 +5,7 @@ public class Edge {
   public final int from;
   public final int to;
 
-  public static Edge get(int from, int to) {
+  public static Edge instance(int from, int to) {
     return new Edge(from, to);
   }
 

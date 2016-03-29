@@ -18,10 +18,10 @@ public class DijkstraShortestPathTest {
     WeightedDigraph graph = new GraphBuilder()
         .setSize(4)
         .build();
-    addEdge(graph, Edge.get(1, 2), 24);
-    addEdge(graph, Edge.get(1, 4), 20);
-    addEdge(graph, Edge.get(3, 1), 3);
-    addEdge(graph, Edge.get(4, 3), 12);
+    addEdge(graph, Edge.instance(1, 2), 24);
+    addEdge(graph, Edge.instance(1, 4), 20);
+    addEdge(graph, Edge.instance(3, 1), 3);
+    addEdge(graph, Edge.instance(4, 3), 12);
 
     // when
     List<Integer> results = solve(graph);
@@ -62,8 +62,8 @@ public class DijkstraShortestPathTest {
   public void evaluateShortestPathWithParallelEdges() {
     WeightedDigraph graph = createGraph(3);
 
-    addParallelEdges(graph, Edge.get(1, 2), 1, 2);
-    addParallelEdges(graph, Edge.get(2, 3), 3, 1, 4);
+    addParallelEdges(graph, Edge.instance(1, 2), 1, 2);
+    addParallelEdges(graph, Edge.instance(2, 3), 3, 1, 4);
 
     List<Integer> results = solve(graph);
     results.remove(0);
@@ -75,10 +75,10 @@ public class DijkstraShortestPathTest {
   public void edgesDefinedOutOfSequence() {
     WeightedDigraph graph = createGraph(3);
 
-    addParallelEdges(graph, Edge.get(1, 2), 1, 2);
-    addEdge(graph, Edge.get(2, 3), 3);
-    addEdge(graph, Edge.get(3, 2), 1);
-    addEdge(graph, Edge.get(3, 2), 4);
+    addParallelEdges(graph, Edge.instance(1, 2), 1, 2);
+    addEdge(graph, Edge.instance(2, 3), 3);
+    addEdge(graph, Edge.instance(3, 2), 1);
+    addEdge(graph, Edge.instance(3, 2), 4);
 
     List<Integer> results = solve(graph);
     results.remove(0);

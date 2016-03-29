@@ -17,13 +17,13 @@ public class AllowParallelEdgesTest {
   @Before
   public void setup() {
     graph = new GraphBuilder().setSize(2).build();
-    graph.add(Edge.get(1, 2), 2);
+    graph.add(Edge.instance(1, 2), 2);
   }
 
   @Test
   public void allowParallelEdges() {
     createValidator(true);
-    boolean valid = validator.isValid(graph, Edge.get(1, 2), 100);
+    boolean valid = validator.isValid(graph, Edge.instance(1, 2), 100);
     assertTrue(valid);
   }
 
@@ -34,7 +34,7 @@ public class AllowParallelEdgesTest {
   @Test
   public void disallowParallelEdges() {
     createValidator(false);
-    boolean valid = validator.isValid(graph, Edge.get(1, 2), 100);
+    boolean valid = validator.isValid(graph, Edge.instance(1, 2), 100);
     assertFalse(valid);
   }
 

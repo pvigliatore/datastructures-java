@@ -50,7 +50,7 @@ public class DijkstraShortestPath {
       graph.getAdjecentVertices(vertex)
           .stream()
           .forEach(adjacentVertex -> {
-            Edge edge = Edge.get(vertex, adjacentVertex);
+            Edge edge = Edge.instance(vertex, adjacentVertex);
             int weight = getMinWeight(edge);
             int shortestDistanceToNeighbor = Math.min(shortestDistanceToNode + weight, shortestDistance(adjacentVertex));
             shortestDistances.put(adjacentVertex, shortestDistanceToNeighbor);

@@ -37,7 +37,7 @@ public class WeightedDigraphTest {
 
   @Test
   public void graphWeightsAreAppliedToOneDirection() {
-    Edge edge = Edge.get(1, 2);
+    Edge edge = Edge.instance(1, 2);
     int weight = 10;
 
     createGraph(4);
@@ -52,8 +52,8 @@ public class WeightedDigraphTest {
     int weight = 10;
     createGraph(4);
 
-    graph.add(Edge.get(1, 2), weight);
-    graph.add(Edge.get(3, 2), weight);
+    graph.add(Edge.instance(1, 2), weight);
+    graph.add(Edge.instance(3, 2), weight);
 
     verifyContents(graph.getAdjecentVertices(1), Collections.singletonList(2));
     assertTrue(graph.getAdjecentVertices(2).isEmpty());
@@ -67,9 +67,9 @@ public class WeightedDigraphTest {
   @Test
   public void getAllNeighbors() {
     createGraph(4);
-    Edge edge1 = Edge.get(1, 2);
-    Edge edge2 = Edge.get(1, 3);
-    Edge edge3 = Edge.get(2, 4);
+    Edge edge1 = Edge.instance(1, 2);
+    Edge edge2 = Edge.instance(1, 3);
+    Edge edge3 = Edge.instance(2, 4);
     graph.add(edge1, 1);
     graph.add(edge2, 2);
     graph.add(edge3, 3);
@@ -109,7 +109,7 @@ public class WeightedDigraphTest {
   }
 
   private void addEdge(int from, int to, int weight) {
-    graph.add(Edge.get(from, to), weight);
+    graph.add(Edge.instance(from, to), weight);
   }
 
 }

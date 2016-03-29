@@ -21,8 +21,8 @@ public class EdgesTest {
 
   @Test
   public void countParallelEdgesAsDistinctEntries() {
-    Edge edge1 = Edge.get(1, 2);
-    Edge edge2 = Edge.get(1, 2);
+    Edge edge1 = Edge.instance(1, 2);
+    Edge edge2 = Edge.instance(1, 2);
 
     edges.add(edge1, 1);
     edges.add(edge2, 2);
@@ -32,23 +32,23 @@ public class EdgesTest {
 
   @Test
   public void getWeightsWithUndefinedEdge() {
-    Collection<Integer> weights = edges.getWeights(Edge.get(100, 1000));
+    Collection<Integer> weights = edges.getWeights(Edge.instance(100, 1000));
     assertTrue(weights.isEmpty());
   }
 
   @Test
   public void getMininimumWeight() {
-    Edge edge = Edge.get(1, 2);
+    Edge edge = Edge.instance(1, 2);
     edges.add(edge, 100);
     edges.add(edge, 101);
-    edges.add(Edge.get(1, 3), 1);
+    edges.add(Edge.instance(1, 3), 1);
 
     assertEquals(100, edges.getMinWeight(edge).get().intValue());
   }
 
   @Test
   public void getMinimimumWeightWithNoEdges() {
-    boolean hasMinEdge = edges.getMinWeight(Edge.get(1, 2)).isPresent();
+    boolean hasMinEdge = edges.getMinWeight(Edge.instance(1, 2)).isPresent();
     assertFalse(hasMinEdge);
   }
 

@@ -17,7 +17,7 @@ public class AllowOutOfBoundsEdgeTest {
 
   @Before
   public void setup() {
-    edge = Edge.get(1, 10);
+    edge = Edge.instance(1, 10);
   }
 
   @Test
