@@ -28,9 +28,6 @@ public class DijkstraShortestPathTest {
     results.remove(0);
 
     assertEquals(Arrays.asList(24, 3, 15), results);
-
-//    String output = results.stream().map(i -> Integer.toString(i)).collect(Collectors.joining(" "));
-//    assertEquals("24 3 15", output);
   }
 
   private List<Integer> solve(WeightedDigraph graph) {
@@ -63,18 +60,44 @@ public class DijkstraShortestPathTest {
 
   @Test
   public void evaluateShortestPathWithParallelEdges() {
-    WeightedDigraph graph = new GraphBuilder()
-        .setSize(3)
-        .allowParallelEdges()
-        .build();
+    WeightedDigraph graph = createGraph(3);
 
     addParallelEdges(graph, Edge.get(1, 2), 1, 2);
-    addParallelEdges(graph, Edge.get(2, 3), 1, 2);
+    addParallelEdges(graph, Edge.get(2, 3), 3, 1, 4);
 
     List<Integer> results = solve(graph);
     results.remove(0);
 
     assertEquals(Arrays.asList(1, 2), results);
+  }
+
+  @Test
+  public void edgesDefinedOutOfSequence() {
+    WeightedDigraph graph = createGraph(3);
+
+    addParallelEdges(graph, Edge.get(1, 2), 1, 2);
+    addEdge(graph, Edge.get(2, 3), 3);
+    addEdge(graph, Edge.get(3, 2), 1);
+    addEdge(graph, Edge.get(3, 2), 4);
+
+    List<Integer> results = solve(graph);
+    results.remove(0);
+
+    assertEquals(Arrays.asList(1, 2), results);
+  }
+
+  @Test
+  public void testUnreachableNodes() {
+    WeightedDigraph graph = createGraph(3);
+    List<Integer> results = solve(graph);
+    assertEquals(Arrays.asList(0, -1, -1), results);
+  }
+
+  private WeightedDigraph createGraph(int size) {
+    return new GraphBuilder()
+          .setSize(size)
+          .allowParallelEdges()
+          .build();
   }
 
 }

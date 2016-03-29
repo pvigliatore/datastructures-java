@@ -35,7 +35,6 @@ public class DijkstraShortestPath {
     Comparator<PathWeight> comparator = (o1, o2) -> Integer.compare(o1.weight(), o2.weight());
     return new IndexedHeapBuilder<Integer, PathWeight>()
         .setComparator(comparator)
-        .setIdFunction(PathWeight::to)
         .build();
   }
 
