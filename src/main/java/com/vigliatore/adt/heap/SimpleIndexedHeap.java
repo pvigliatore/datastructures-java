@@ -67,6 +67,15 @@ class SimpleIndexedHeap<K, V> implements IndexedHeap<K, V> {
   }
 
   @Override
+  public void set(K key, V value) {
+    if (indexById.containsKey(key)) {
+      update(key, value);
+    } else {
+      add(key, value);
+    }
+  }
+
+  @Override
   public void update(K key, V value) {
     if (!indexById.containsKey(key)) {
       return;

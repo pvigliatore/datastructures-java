@@ -8,6 +8,8 @@ public interface IndexedHeap<K, V> {
 
   void add(K key, V value);
 
+  void set(K key, V value);
+
   boolean isEmpty();
 
   Tuple<K, V> pop();
