@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
@@ -25,23 +26,18 @@ public class DijkstraShortestPathTest {
     addEdge(graph, Edge.instance(4, 3), 12);
 
     // when
-    List<Integer> results = solve(graph);
-    results.remove(0);
+    List<Integer> results = solve(graph, 1);
 
-    assertEquals(Arrays.asList(24, 3, 15), results);
+    assertEquals(Arrays.asList(0, 24, 3, 15), results);
   }
 
-  private List<Integer> solve(WeightedGraph graph) {
-    Map<Integer, Integer> paths = new DijkstraShortestPath(graph, 1).solve();
+  private List<Integer> solve(WeightedGraph graph, int start) {
+    Map<Integer, Integer> paths = new DijkstraShortestPath(graph, start).solve();
     List<Integer> results = new ArrayList<>();
 
     // then
     for (int i = 1; i <= graph.vertices(); i++) {
-      int distance = paths.get(i);
-      if (distance == Integer.MAX_VALUE) {
-        distance = -1;
-      }
-
+      int distance = Optional.ofNullable(paths.get(i)).orElse(-1);
       results.add(distance);
     }
     return results;
@@ -66,7 +62,7 @@ public class DijkstraShortestPathTest {
     addParallelEdges(graph, Edge.instance(1, 2), 1, 2);
     addParallelEdges(graph, Edge.instance(2, 3), 3, 1, 4);
 
-    List<Integer> results = solve(graph);
+    List<Integer> results = solve(graph, 1);
     results.remove(0);
 
     assertEquals(Arrays.asList(1, 2), results);
@@ -81,17 +77,25 @@ public class DijkstraShortestPathTest {
     addEdge(graph, Edge.instance(3, 2), 1);
     addEdge(graph, Edge.instance(3, 2), 4);
 
-    List<Integer> results = solve(graph);
-    results.remove(0);
-
-    assertEquals(Arrays.asList(1, 2), results);
+    List<Integer> results = solve(graph, 1);
+    assertEquals(Arrays.asList(0, 1, 2), results);
   }
 
   @Test
-  public void testUnreachableNodes() {
+  public void allNodesAreUnreachable() {
     WeightedGraph graph = createGraph(3);
-    List<Integer> results = solve(graph);
+    List<Integer> results = solve(graph, 1);
     assertEquals(Arrays.asList(0, -1, -1), results);
+  }
+
+  @Test
+  public void shortestPathOfDisconnectedGraph() {
+    WeightedGraph graph = createGraph(4);
+    graph.add(Edge.instance(1, 2), 1);
+    graph.add(Edge.instance(3, 4), 1);
+
+    List<Integer> results = solve(graph, 1);
+    assertEquals(Arrays.asList(0, 1, -1, -1), results);
   }
 
   private WeightedGraph createGraph(int size) {

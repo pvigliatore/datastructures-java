@@ -14,7 +14,7 @@ class PathWeight {
     this.weight = weight;
   }
 
-  public int to() {
+  public int vertex() {
     return to;
   }
 

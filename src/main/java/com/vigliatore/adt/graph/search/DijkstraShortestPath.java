@@ -5,35 +5,31 @@ import com.vigliatore.adt.graph.WeightedGraph;
 import com.vigliatore.adt.heap.IndexedHeap;
 import com.vigliatore.adt.heap.IndexedHeapBuilder;
 
+import java.util.BitSet;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
-import java.util.stream.IntStream;
+import java.util.function.Consumer;
 
-public class DijkstraShortestPath {
+public class DijkstraShortestPath implements Iterator<PathWeight> {
 
   private final WeightedGraph graph;
   private final IndexedHeap<Integer, PathWeight> priorityQueue;
-  private final Map<Integer, Integer> shortestDistances;
+  private final Map<Integer, Integer> estimates;
+  private final BitSet visited;
   private final int startNode;
 
   public DijkstraShortestPath(WeightedGraph graph, int startNode) {
     this.graph = graph;
     this.startNode = startNode;
     this.priorityQueue = createPriorityQueue();
-    this. shortestDistances = new HashMap<>();
-    initialize(graph);
+    this.estimates = new HashMap<>();
+    this.visited = new BitSet(graph.vertices());
   }
 
-  public void initialize(WeightedGraph graph) {
-    IntStream.rangeClosed(1, graph.vertices()).forEach(vertex -> {
-      shortestDistances.put(vertex, Integer.MAX_VALUE);
-      priorityQueue.add(vertex, PathWeight.get(vertex, Integer.MAX_VALUE));
-    });
-  }
-
-  public IndexedHeap<Integer, PathWeight> createPriorityQueue() {
+  private IndexedHeap<Integer, PathWeight> createPriorityQueue() {
     Comparator<PathWeight> comparator = (o1, o2) -> Integer.compare(o1.weight(), o2.weight());
     return new IndexedHeapBuilder<Integer, PathWeight>()
         .setComparator(comparator)
@@ -41,26 +37,67 @@ public class DijkstraShortestPath {
   }
 
   public Map<Integer, Integer> solve() {
-    priorityQueue.update(startNode, PathWeight.get(startNode, 0));
+    priorityQueue.add(startNode, PathWeight.get(startNode, 0));
     while (isUnsolved()) {
-      PathWeight nearestVertex = priorityQueue.pop().value();
-      int vertex = nearestVertex.to();
-      int shortestDistanceToNode = Math.min(shortestDistance(vertex), nearestVertex.weight());
-      shortestDistances.put(vertex, shortestDistanceToNode);
-
-      // update the priority queue with the new estimated shortest paths
-      graph.getAdjecentVertices(vertex)
-          .stream()
-          .forEach(adjacentVertex -> {
-            Edge edge = Edge.instance(vertex, adjacentVertex);
-            int weight = getMinWeight(edge);
-            int shortestDistanceToNeighbor = Math.min(shortestDistanceToNode + weight, shortestDistance(adjacentVertex));
-            shortestDistances.put(adjacentVertex, shortestDistanceToNeighbor);
-            priorityQueue.update(adjacentVertex, PathWeight.get(adjacentVertex, shortestDistanceToNeighbor));
-          });
+      solveForNearestVertex();
     }
 
-    return Collections.unmodifiableMap(shortestDistances);
+    return Collections.unmodifiableMap(estimates);
+  }
+
+  @Override
+  public void forEachRemaining(Consumer<? super PathWeight> action) {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public void remove() {
+    throw new UnsupportedOperationException();
+  }
+
+  @Override
+  public PathWeight next() {
+    return solveForNearestVertex();
+  }
+
+  @Override
+  public boolean hasNext() {
+    return isUnsolved();
+  }
+
+  private PathWeight solveForNearestVertex() {
+    PathWeight nearest = priorityQueue.pop().value();
+    int vertex = nearest.vertex();
+    updateEstimate(nearest);
+    visited.set(vertex - 1);
+
+    // update the priority queue with the new estimated shortest paths
+    graph.getAdjecentVertices(vertex)
+        .stream()
+        .filter(adjacentVertex -> !visited.get(adjacentVertex - 1))
+        .forEach(adjacentVertex -> {
+          Edge edge = Edge.instance(vertex, adjacentVertex);
+          int weight = getMinWeight(edge);
+          PathWeight estimate = PathWeight.get(adjacentVertex, estimates.get(vertex) + weight);
+          updateEstimate(estimate);
+          priorityQueue.set(adjacentVertex, PathWeight.get(adjacentVertex, shortestDistance(adjacentVertex)));
+        });
+
+    return nearest;
+  }
+
+  private void updateEstimate(PathWeight nearest) {
+    int vertex = nearest.vertex();
+    int estimate = nearest.weight();
+
+    int shortestDistanceToNode;
+    if(estimates.containsKey(vertex)) {
+      int shortestPath = shortestDistance(vertex);
+      shortestDistanceToNode = Math.min(shortestPath, estimate);
+    } else {
+      shortestDistanceToNode = estimate;
+    }
+    estimates.put(vertex, shortestDistanceToNode);
   }
 
   private int getMinWeight(Edge edge) {
@@ -72,7 +109,7 @@ public class DijkstraShortestPath {
   }
 
   private int shortestDistance(int nodeId) {
-    return shortestDistances.get(nodeId);
+    return estimates.get(nodeId);
   }
 
 }
