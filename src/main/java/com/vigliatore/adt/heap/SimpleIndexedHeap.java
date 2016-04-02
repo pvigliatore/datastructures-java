@@ -22,7 +22,7 @@ class SimpleIndexedHeap<K, V> implements IndexedHeap<K, V> {
   SimpleIndexedHeap(Comparator<V> comparator) {
     this.comparator = comparator;
 
-    this.values = new ArrayList<V>();
+    this.values = new ArrayList<>();
     this.ids = new ArrayList<>();
     this.indexById = new HashMap<>();
   }
@@ -50,8 +50,7 @@ class SimpleIndexedHeap<K, V> implements IndexedHeap<K, V> {
     }
     K key = ids.get(0);
     V value = values.get(0);
-    Tuple<K, V> keyValuePair = Tuple.instance(key, value);
-    return keyValuePair;
+    return Tuple.instance(key, value);
   }
 
   @Override
