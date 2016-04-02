@@ -6,9 +6,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SimpleHeapTest {
 
@@ -26,8 +24,9 @@ public class SimpleHeapTest {
       heap.add(x);
     }
 
-    for (int i = 0; i < size; i++) {
-      Assert.assertEquals(i, heap.pop().intValue());
+    int expectedValue = 0;
+    for (int actualValue : heap) {
+      Assert.assertEquals(expectedValue++, heap.pop().intValue());
     }
   }
 

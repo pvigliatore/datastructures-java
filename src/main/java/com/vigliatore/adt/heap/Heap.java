@@ -1,6 +1,6 @@
 package com.vigliatore.adt.heap;
 
-public interface Heap<T> {
+public interface Heap<T> extends Iterable<T> {
 
   int size();
 

@@ -5,25 +5,25 @@ import java.util.*;
 class SimpleHeap<T> implements Heap<T> {
 
   public static <T extends Comparable<T>> Heap<T> minHeap() {
-    return new SimpleHeap<T>(Comparator.<T> naturalOrder());
+    return new SimpleHeap<T>(Comparator.naturalOrder());
   }
 
   public static <T extends Comparable<T>> Heap<T> maxHeap() {
     return new SimpleHeap<T>(Comparator.<T> naturalOrder().reversed());
   }
 
-  public static <T> Heap<T> newInstance(Comparator<T> comparator) {
+  public static <T> Heap<T> instance(Comparator<T> comparator) {
     if (comparator == null) {
       throw new IllegalArgumentException();
     }
-    return new SimpleHeap<T>(comparator);
+    return new SimpleHeap<>(comparator);
   }
 
   private final ArrayList<T> values;
   private final Comparator<T> comparator;
 
   private SimpleHeap(Comparator<T> comparator) {
-    this.values = new ArrayList<T>();
+    this.values = new ArrayList<>();
     this.comparator = comparator;
   }
 
@@ -124,16 +124,12 @@ class SimpleHeap<T> implements Heap<T> {
     return head;
   }
 
-  public List<T> drain() {
-    ArrayList<T> orderedValues = new ArrayList<T>();
-    while (!isEmpty()) {
-      orderedValues.add(pop());
-    }
-    return orderedValues;
-  }
-
   public boolean isEmpty() {
     return size() != 0;
   }
 
+  @Override
+  public Iterator<T> iterator() {
+    return new HeapIterator<>(this);
+  }
 }
