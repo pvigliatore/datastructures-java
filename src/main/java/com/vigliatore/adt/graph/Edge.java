@@ -9,7 +9,7 @@ public class Edge {
     return new Edge(from, to);
   }
 
-  private Edge(int from, int to) {
+  protected Edge(int from, int to) {
     this.from = from;
     this.to = to;
   }
