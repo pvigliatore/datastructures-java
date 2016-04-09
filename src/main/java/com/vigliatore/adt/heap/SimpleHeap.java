@@ -125,7 +125,7 @@ class SimpleHeap<T> implements Heap<T> {
   }
 
   public boolean isEmpty() {
-    return size() != 0;
+    return size() == 0;
   }
 
   @Override
