@@ -26,7 +26,7 @@ public class SimpleHeapTest {
 
     int expectedValue = 0;
     for (int actualValue : heap) {
-      Assert.assertEquals(expectedValue++, heap.pop().intValue());
+      Assert.assertEquals(expectedValue++, actualValue);
     }
   }
 
