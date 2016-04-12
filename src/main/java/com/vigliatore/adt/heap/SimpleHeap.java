@@ -2,7 +2,7 @@ package com.vigliatore.adt.heap;
 
 import java.util.*;
 
-class SimpleHeap<T> implements Heap<T> {
+public class SimpleHeap<T> implements Heap<T> {
 
   public static <T extends Comparable<T>> Heap<T> minHeap() {
     return new SimpleHeap<T>(Comparator.naturalOrder());
@@ -38,6 +38,11 @@ class SimpleHeap<T> implements Heap<T> {
   public void add(T value) {
     values.add(value);
     swim(size() - 1);
+  }
+
+  @Override
+  public void addAll(Collection<T> values) {
+    values.forEach(this::add);
   }
 
   private void swim(int index) {
