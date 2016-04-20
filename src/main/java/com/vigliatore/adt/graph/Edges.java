@@ -33,10 +33,6 @@ class Edges {
     return size;
   }
 
-  public Edge getEdge() {
-    return null;
-  }
-
   public Collection<Integer> getWeights(Edge edge) {
     List<Integer> edgeWeights = weights.getOrDefault(edge, Collections.emptyList());
     return Collections.unmodifiableCollection(edgeWeights);
@@ -60,6 +56,13 @@ class Edges {
 
   public boolean contains(Edge edge) {
     return weights.containsKey(edge);
+  }
+
+  public int weight() {
+    return weights.values()
+        .stream()
+        .mapToInt(list -> list.stream().mapToInt(x -> (int) x).sum())
+        .sum();
   }
 
 }
