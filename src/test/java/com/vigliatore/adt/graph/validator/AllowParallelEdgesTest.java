@@ -17,7 +17,7 @@ public class AllowParallelEdgesTest {
   @Before
   public void setup() {
     graph = new GraphBuilder().setSize(2).build();
-    graph.add(Edge.instance(1, 2), 2);
+    graph.addDirectedEdge(Edge.instance(1, 2), 2);
   }
 
   @Test

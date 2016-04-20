@@ -26,12 +26,20 @@ public class WeightedDigraph implements WeightedGraph {
 
   @Override
   public void add(Edge edge) {
-    addEdge(edge, defaultWeight);
+    addDirectedEdge(edge, defaultWeight);
   }
 
   @Override
-  public void add(Edge edge, int weight) {
-    addEdge(edge, weight);
+  public void addDirectedEdge(Edge edge, int weight) {
+    validate(edge, weight);
+    vertices = Arrays.asList(edge.from, edge.to, vertices).stream().max(Comparator.naturalOrder()).get();
+    edges.add(edge, weight);
+  }
+
+  @Override
+  public void addUndirectedEdge(Edge edge, int weight) {
+    addDirectedEdge(edge, weight);
+    addDirectedEdge(edge.reverse(), weight);
   }
 
   private void validate(Edge edge, int weight) {
@@ -39,12 +47,6 @@ public class WeightedDigraph implements WeightedGraph {
     if (!valid) {
       throw new IllegalArgumentException();
     }
-  }
-
-  private void addEdge(Edge edge, int weight) {
-    validate(edge, weight);
-    vertices = Arrays.asList(edge.from, edge.to, vertices).stream().max(Comparator.naturalOrder()).get();
-    edges.add(edge, weight);
   }
 
   @Override
@@ -82,4 +84,8 @@ public class WeightedDigraph implements WeightedGraph {
     return edges.size();
   }
 
+  @Override
+  public int getWeight() {
+    return edges.weight();
+  }
 }

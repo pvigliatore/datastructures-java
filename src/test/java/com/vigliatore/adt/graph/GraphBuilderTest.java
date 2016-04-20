@@ -25,7 +25,7 @@ public class GraphBuilderTest {
         .allowLoops()
         .build();
     Edge loopingEdge = Edge.instance(1, 1);
-    graph.add(loopingEdge, weight);
+    graph.addDirectedEdge(loopingEdge, weight);
 
     assertTrue(graph.contains(loopingEdge));
     assertEquals(weight, graph.getMinWeight(loopingEdge).get().intValue());
@@ -37,7 +37,7 @@ public class GraphBuilderTest {
     graph = builder.setSize(weight)
         .disallowLoops()
         .build();
-    graph.add(Edge.instance(1, 1), weight);
+    graph.addDirectedEdge(Edge.instance(1, 1), weight);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -47,7 +47,7 @@ public class GraphBuilderTest {
         .setSize(weight)
         .build();
     Edge loopingEdge = Edge.instance(1, 1);
-    graph.add(loopingEdge, weight);
+    graph.addDirectedEdge(loopingEdge, weight);
 
     assertTrue(graph.contains(loopingEdge));
     assertEquals(weight, graph.getMinWeight(loopingEdge).get().intValue());
@@ -61,7 +61,7 @@ public class GraphBuilderTest {
         .build();
     assertEquals(0, graph.vertices());
 
-    graph.add(Edge.instance(10, 11), 0);
+    graph.addDirectedEdge(Edge.instance(10, 11), 0);
 
     assertEquals(11, graph.vertices());
   }
@@ -72,7 +72,7 @@ public class GraphBuilderTest {
         .setSize(2)
         .build();
 
-    graph.add(Edge.instance(1, 3), 0);
+    graph.addDirectedEdge(Edge.instance(1, 3), 0);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -81,7 +81,7 @@ public class GraphBuilderTest {
         .setSize(2)
         .build();
 
-    graph.add(Edge.instance(1, 3), 0);
+    graph.addDirectedEdge(Edge.instance(1, 3), 0);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -90,7 +90,7 @@ public class GraphBuilderTest {
         .setSize(10)
         .build();
 
-    graph.add(Edge.instance(1, 3), -10);
+    graph.addDirectedEdge(Edge.instance(1, 3), -10);
   }
 
   @Test
@@ -102,7 +102,7 @@ public class GraphBuilderTest {
 
     Edge edge = Edge.instance(1, 5);
     int weight = -1;
-    graph.add(edge, weight);
+    graph.addDirectedEdge(edge, weight);
 
     assertEquals(weight, graph.getMinWeight(edge).get().intValue());
   }
@@ -114,7 +114,7 @@ public class GraphBuilderTest {
         .disallowNegativeWeightEdges()
         .build();
 
-    graph.add(Edge.instance(1, 3), -10);
+    graph.addDirectedEdge(Edge.instance(1, 3), -10);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -123,8 +123,8 @@ public class GraphBuilderTest {
         .setSize(5)
         .build();
 
-    graph.add(Edge.instance(1, 2), 1);
-    graph.add(Edge.instance(1, 2), 2);
+    graph.addDirectedEdge(Edge.instance(1, 2), 1);
+    graph.addDirectedEdge(Edge.instance(1, 2), 2);
   }
 
   @Test
@@ -135,8 +135,8 @@ public class GraphBuilderTest {
         .build();
 
     Edge edge = Edge.instance(1, 2);
-    graph.add(edge, 1);
-    graph.add(edge, 2);
+    graph.addDirectedEdge(edge, 1);
+    graph.addDirectedEdge(edge, 2);
 
     graph.getWeights(edge).containsAll(Arrays.asList(1, 2));
   }
@@ -149,8 +149,8 @@ public class GraphBuilderTest {
         .build();
 
     Edge edge = Edge.instance(1, 2);
-    graph.add(edge, 1);
-    graph.add(edge, 2);
+    graph.addDirectedEdge(edge, 1);
+    graph.addDirectedEdge(edge, 2);
   }
 
 }
