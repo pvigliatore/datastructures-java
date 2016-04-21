@@ -13,14 +13,13 @@ import java.util.stream.Stream;
 public class PrimsMinimumSpanningTree implements MinimumSpanningTree {
 
   private final int start;
-  private final int vertices;
   private final WeightedGraph minimumSpanningTree;
   private final WeightedGraph graph;
   private final Heap<EdgeWeight> edgeWeights;
   private final BitSet connected;
 
   public PrimsMinimumSpanningTree(WeightedGraph graph, int start) {
-    vertices = graph.vertices();
+    int vertices = graph.vertices();
     this.graph = graph;
     minimumSpanningTree = new GraphBuilder()
         .setSize(graph.vertices())
