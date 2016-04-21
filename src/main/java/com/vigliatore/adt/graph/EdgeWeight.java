@@ -1,6 +1,7 @@
 package com.vigliatore.adt.graph;
 
 import java.util.Comparator;
+import java.util.Objects;
 
 public class EdgeWeight {
 
@@ -29,11 +30,11 @@ public class EdgeWeight {
     return edge;
   }
 
-  private int from() {
+  public int from() {
     return edge.from;
   }
 
-  private int to() {
+  public int to() {
     return edge.to;
   }
 
@@ -41,4 +42,17 @@ public class EdgeWeight {
     return weight;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    EdgeWeight that = (EdgeWeight) o;
+    return weight == that.weight &&
+        Objects.equals(edge, that.edge);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(edge, weight);
+  }
 }
