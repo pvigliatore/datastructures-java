@@ -55,8 +55,8 @@ public class WeightedDigraphTest {
     graph.addDirectedEdge(Edge.instance(1, 2), weight);
     graph.addDirectedEdge(Edge.instance(3, 2), weight);
 
-    verifyContents(graph.getAdjecentVertices(1), Collections.singletonList(2));
-    assertTrue(graph.getAdjecentVertices(2).isEmpty());
+    verifyContents(graph.getAdjacentVertices(1), Collections.singletonList(2));
+    assertTrue(graph.getAdjacentVertices(2).isEmpty());
   }
 
   public void verifyContents(Collection<Integer> neighbors, Collection<Integer> expected) {
@@ -74,7 +74,7 @@ public class WeightedDigraphTest {
     graph.addDirectedEdge(edge2, 2);
     graph.addDirectedEdge(edge3, 3);
 
-    Set<Integer> actualNeighborIds = graph.getAdjecentVertices(1);
+    Set<Integer> actualNeighborIds = graph.getAdjacentVertices(1);
     Collection<Integer> expectedNeighborIds = Arrays.asList(2, 3);
 
     assertEquals(actualNeighborIds.size(), expectedNeighborIds.size());

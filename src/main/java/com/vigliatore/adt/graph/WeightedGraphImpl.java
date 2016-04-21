@@ -65,7 +65,7 @@ public class WeightedGraphImpl implements WeightedGraph {
   }
 
   @Override
-  public Set<Integer> getAdjecentVertices(int vertex) {
+  public Set<Integer> getAdjacentVertices(int vertex) {
     return edges.getAdjacentVertices(vertex);
   }
 

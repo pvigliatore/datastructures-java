@@ -38,8 +38,7 @@ public class PrimsMinimumSpanningTree implements MinimumSpanningTree {
   public void solve() {
     // initialize the solver
     connected.set(start);
-    // TODO fix this typo: getAdjecentVertices
-    for (int adjacentVertex : graph.getAdjecentVertices(start)) {
+    for (int adjacentVertex : graph.getAdjacentVertices(start)) {
       Edge edge = Edge.instance(start, adjacentVertex);
       int weight = graph.getMinWeight(edge).orElseThrow(IllegalStateException::new);
       edgeWeights.add(EdgeWeight.instance(edge.to, edge.from, weight));
@@ -100,7 +99,7 @@ public class PrimsMinimumSpanningTree implements MinimumSpanningTree {
   }
 
   private Stream<Edge> getUnconnectedAdjacentVertices(int vertex) {
-    return graph.getAdjecentVertices(vertex)
+    return graph.getAdjacentVertices(vertex)
         .stream()
         .map(neighbor -> Edge.instance(vertex, neighbor))
         .filter(adjacentEdge -> !isConnected(adjacentEdge));

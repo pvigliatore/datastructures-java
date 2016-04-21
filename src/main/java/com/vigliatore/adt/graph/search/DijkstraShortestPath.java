@@ -72,7 +72,7 @@ public class DijkstraShortestPath implements Iterator<PathWeight> {
     visited.set(vertex - 1);
 
     // update the priority queue with the new estimated shortest paths
-    graph.getAdjecentVertices(vertex)
+    graph.getAdjacentVertices(vertex)
         .stream()
         .filter(adjacentVertex -> !visited.get(adjacentVertex - 1))
         .forEach(adjacentVertex -> {

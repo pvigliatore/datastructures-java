@@ -11,7 +11,7 @@ public interface Graph {
 
   int vertices();
 
-  Set<Integer> getAdjecentVertices(int vertex);
+  Set<Integer> getAdjacentVertices(int vertex);
 
   int size();
 }
