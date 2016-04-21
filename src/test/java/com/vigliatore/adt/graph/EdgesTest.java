@@ -3,7 +3,10 @@ package com.vigliatore.adt.graph;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -55,6 +58,28 @@ public class EdgesTest {
   @Test
   public void doNotFailWhenThereAreNoAdjacentVertices() {
     assertTrue(edges.getAdjacentVertices(0).isEmpty());
+  }
+
+  @Test
+  public void getAllEdges() {
+    List<Edge> allEdges = Arrays.asList(
+        Edge.instance(1, 2),
+        Edge.instance(2, 3),
+        Edge.instance(2, 4),
+        Edge.instance(2, 1)
+    );
+
+    Collection<EdgeWeight> edgeWeights = allEdges
+        .stream()
+        .map(edge -> EdgeWeight.instance(edge, edge.to))
+        .collect(Collectors.toList());
+
+    edgeWeights.stream()
+        .forEach(edgeWeight -> edges.add(edgeWeight.edge(), edgeWeight.to()));
+
+    Collection<EdgeWeight> actualEdgeWeights = edges.getAllEdges();
+    assertEquals(edgeWeights.size(), actualEdgeWeights.size());
+    assertTrue(edgeWeights.containsAll(actualEdgeWeights));
   }
 
 }

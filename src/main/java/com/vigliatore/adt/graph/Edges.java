@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 class Edges {
 
@@ -63,6 +64,15 @@ class Edges {
         .stream()
         .mapToInt(list -> list.stream().mapToInt(x -> (int) x).sum())
         .sum();
+  }
+
+  public Collection<EdgeWeight> getAllEdges() {
+    return weights.keySet()
+        .stream()
+        .flatMap(edge -> weights.get(edge)
+            .stream()
+            .map(weight -> EdgeWeight.instance(edge, weight))
+        ).collect(Collectors.toList());
   }
 
 }
