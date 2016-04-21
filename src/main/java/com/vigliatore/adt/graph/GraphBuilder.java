@@ -47,7 +47,7 @@ public class GraphBuilder {
   }
 
   public WeightedGraph build() {
-    return new WeightedDigraph(
+    return new WeightedGraphImpl(
         size,
         defaultWeight,
         allowLoops,

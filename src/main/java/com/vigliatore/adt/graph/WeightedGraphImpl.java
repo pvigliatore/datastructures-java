@@ -10,14 +10,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class WeightedDigraph implements WeightedGraph {
+public class WeightedGraphImpl implements WeightedGraph {
 
   private final Edges edges;
   private final List<EdgeValidator> validators;
   private final int defaultWeight;
   private int vertices;
 
-  WeightedDigraph(int vertices, int defaultWeight, EdgeValidator... validators) {
+  WeightedGraphImpl(int vertices, int defaultWeight, EdgeValidator... validators) {
     this.vertices = vertices;
     this.defaultWeight = defaultWeight;
     this.edges = new Edges();
