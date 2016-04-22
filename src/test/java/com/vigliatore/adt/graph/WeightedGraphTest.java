@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class WeightedDigraphTest {
+public class WeightedGraphTest {
 
   private WeightedGraph graph;
 
@@ -106,6 +106,18 @@ public class WeightedDigraphTest {
     createGraph(2);
     assertEquals(2, graph.vertices());
     assertEquals(0, graph.size());
+  }
+
+  @Test
+  public void totalGraphWeight() {
+    createGraph(4);
+    addEdge(1, 2, 2);
+    addEdge(2, 1, 2);
+    addEdge(2, 3, 3);
+    addEdge(4, 1, 1);
+
+    int expectedWeight = 8;
+    assertEquals(expectedWeight, graph.getWeight());
   }
 
   private void addEdge(int from, int to, int weight) {

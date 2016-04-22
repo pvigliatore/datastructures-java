@@ -3,7 +3,6 @@ package com.vigliatore.adt.graph;
 import java.util.Set;
 
 public interface Graph {
-  void add(Edge edge);
 
   boolean contains(int vertex);
 

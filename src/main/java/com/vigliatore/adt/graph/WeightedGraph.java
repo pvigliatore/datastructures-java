@@ -15,4 +15,6 @@ public interface WeightedGraph extends Graph {
 
   int getWeight();
 
+  Collection<EdgeWeight> edges();
+
 }

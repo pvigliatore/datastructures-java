@@ -25,11 +25,6 @@ public class WeightedGraphImpl implements WeightedGraph {
   }
 
   @Override
-  public void add(Edge edge) {
-    addDirectedEdge(edge, defaultWeight);
-  }
-
-  @Override
   public void addDirectedEdge(Edge edge, int weight) {
     validate(edge, weight);
     vertices = Arrays.asList(edge.from, edge.to, vertices).stream().max(Comparator.naturalOrder()).get();
@@ -87,5 +82,10 @@ public class WeightedGraphImpl implements WeightedGraph {
   @Override
   public int getWeight() {
     return edges.weight();
+  }
+
+  @Override
+  public Collection<EdgeWeight> edges() {
+    return edges.getAllEdges();
   }
 }
